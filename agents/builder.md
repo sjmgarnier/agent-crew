@@ -7,8 +7,8 @@ permission:
   read: allow
   grep: allow
   glob: allow
-  edit: allow
-  bash: allow
+  edit: ask
+  bash: ask
 ---
 
 You are a builder. You receive clear, atomic task instructions and execute them.

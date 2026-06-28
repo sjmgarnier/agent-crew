@@ -39,17 +39,17 @@ Think of yourself as the owner of a construction project:
      [Surveyor]         [Architect]          [Foreman]
           │                  │                ┌─┴─┐
     ┌─────┴─────┐       [Inspector]      [Builder] [Inspector]
-[Librarian] [Adjudicator]
+[Librarian] [Examiner]
 ```
 
 - **You** decide when to call the architect, when to tell the foreman to start, when to escalate a problem back to the architect.
 - **Primary agents** (Surveyor, Architect, Foreman) run in separate OpenCode tabs. You switch between them.
-- **Subagents** (Librarian, Adjudicator, Builder, Inspector) are spawned automatically by the primary agents as needed.
+- **Subagents** (Librarian, Examiner, Builder, Inspector) are spawned automatically by the primary agents as needed.
 
 ### The three phases
 
 **Phase 1 — Survey (thinking)**
-Switch to the **Surveyor** tab. Describe your problem or idea. The Surveyor asks clarifying questions, researches via Librarian subagents, evaluates options via the Adjudicator, and generates a `brief.md` when you're ready to move on.
+Switch to the **Surveyor** tab. Describe your problem or idea. The Surveyor asks clarifying questions, researches via Librarian subagents, evaluates options via the Examiner, and generates a `brief.md` when you're ready to move on.
 
 **Phase 2 — Architect (planning)**
 Switch to the **Architect** tab. It reads the brief and creates a complete plan using [OpenSpec](https://github.com/openspec/openspec):
@@ -71,7 +71,8 @@ Switch to the **Foreman** tab. It works through the task list, spawning Builder 
 | **Architect** | primary | Kimi K2.7 Code | Spec creation, design, architecture |
 | **Foreman** | primary | Qwen3.7 Plus | Task orchestration, builder management |
 | Librarian | subagent | DeepSeek V4 Flash | Codebase and external research |
-| Adjudicator | subagent | DeepSeek V4 Flash | Decision evaluation, gap detection |
+| Examiner | subagent | DeepSeek V4 Flash | Analyzes research findings, identifies gaps, recommends next question |
+| Groundskeeper | subagent | DeepSeek V4 Flash | Preflight checks — environment health and role-specific prerequisites |
 | Builder | subagent | Kimi K2.7 Code | Task execution |
 | Inspector | subagent | DeepSeek V4 Pro | Quality gate — called by Architect (pre-handoff) and Foreman (post-task) |
 
@@ -84,7 +85,7 @@ Models are chosen from the [OpenCode Go](https://opencode.ai/docs/go) subscripti
 ### Prerequisites
 
 - [OpenCode](https://opencode.ai) installed
-- [OpenSpec](https://github.com/openspec/openspec) installed and configured (required for the Architect's planning phase)
+- [OpenSpec](https://github.com/openspec/openspec) installed and initialized in each project (`openspec init` in the project root — required for the Architect's planning phase)
 - A compatible model provider (default agents assume an [OpenCode Go](https://opencode.ai/docs/go) subscription — see [Model overrides](#model-overrides) to use another)
 
 ### Install
@@ -101,7 +102,9 @@ curl -fsSL https://raw.githubusercontent.com/sjmgarnier/agent-crew/main/install.
 curl -fsSL https://raw.githubusercontent.com/sjmgarnier/agent-crew/main/install.sh | bash -s -- --local
 ```
 
-**Manual**:
+> **Security note:** piping curl directly to bash executes unverified code. If you prefer, use the manual method below — it fetches through git's transport integrity instead.
+
+**Manual** (safer):
 
 ```bash
 git clone https://github.com/sjmgarnier/agent-crew.git
@@ -144,13 +147,12 @@ Each agent's permissions are defined in its frontmatter. Common adjustments:
 
 | Goal | Change |
 |---|---|
-| Let the Surveyor edit files | `edit: deny` → `edit: ask` |
 | Let the Foreman spawn any subagent | `"*": deny` → `"*": allow` in the `task` block |
-| Give the Librarian full bash access | `bash: ask` → `bash: allow` |
+| Let the Surveyor edit files directly | `edit: ask` → `edit: allow` |
 
 ### Disabling an agent
 
-To disable a subagent, add `disable: true` to its frontmatter. The primary agent that would have spawned it will proceed without it (or escalate to you if it can't).
+To disable a subagent, add `disable: true` to its frontmatter. OpenCode removes the agent from the registry — any primary agent that tries to spawn it will receive an error. Whether that surfaces as an escalation to you depends on the calling agent's error handling.
 
 ### Troubleshooting
 
