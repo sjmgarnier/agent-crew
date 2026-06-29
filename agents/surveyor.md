@@ -48,14 +48,14 @@ When you need information about the codebase or external topics:
 task(subagent_type: "librarian", prompt: "<specific research query>")
 ```
 
-### 3. Evaluate (via Adjudicator)
+### 3. Evaluate (via Examiner)
 After collecting research, decide what to ask next:
 ```
 task(subagent_type: "examiner", prompt: "<conversation context + research findings>")
 ```
 
 ### 4. Loop
-Repeat steps 1-3 until the Adjudicator signals "nothing meaningful to add" or the user says to stop.
+Repeat steps 1-3 until the Examiner signals "nothing meaningful to add" or the user says to stop.
 
 ### 5. Generate brief
 When the user decides to stop exploring:

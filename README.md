@@ -23,7 +23,7 @@ A multi-agent system for [OpenCode](https://opencode.ai) that separates thinking
 
 ## What is this?
 
-Agent Crew is a set of seven specialized agents for OpenCode. Instead of one general-purpose agent doing everything, the crew splits the work into three phases — thinking, planning, execution — with purpose-built agents for each role and cost-optimized models for each task type.
+Agent Crew is a set of eight specialized agents for OpenCode. Instead of one general-purpose agent doing everything, the crew splits the work into three phases — thinking, planning, execution — with purpose-built agents for each role and cost-optimized models for each task type.
 
 **You remain in control throughout.** No phase starts without you. No agent chains into another automatically. You decide when to move from thinking to planning to building.
 
@@ -33,18 +33,22 @@ Think of yourself as the owner of a construction project:
 
 ```
                          You (owner)
+                             ▲
                              │
           ┌──────────────────┼──────────────────┐
           ▼                  ▼                  ▼
      [Surveyor]         [Architect]          [Foreman]
-          │                  │                ┌─┴─┐
-    ┌─────┴─────┐       [Inspector]      [Builder] [Inspector]
-[Librarian] [Examiner]
+          ▲                  ▲                  ▲
+          │                  │                  │
+          ▼                  ▼                  ▼
+    [Groundskeeper]    [Groundskeeper]    [Groundskeeper]
+     [Librarian]        [Inspector]          [Builder]
+     [Examiner]                             [Inspector]
 ```
 
 - **You** decide when to call the architect, when to tell the foreman to start, when to escalate a problem back to the architect.
 - **Primary agents** (Surveyor, Architect, Foreman) run in separate OpenCode tabs. You switch between them.
-- **Subagents** (Librarian, Examiner, Builder, Inspector) are spawned automatically by the primary agents as needed.
+- **Subagents** (Librarian, Examiner, Groundskeeper, Builder, Inspector) are spawned automatically by the primary agents as needed.
 
 ### The three phases
 

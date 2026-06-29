@@ -95,9 +95,14 @@ else
     fi
   done
 
-  # Write manifest of agents installed in this run
+  # Merge new installs with existing manifest entries
   if [ ${#INSTALLED[@]} -gt 0 ]; then
-    printf '%s\n' "${INSTALLED[@]}" > "$MANIFEST"
+    existing=()
+    if [ -f "$MANIFEST" ]; then
+      mapfile -t existing < "$MANIFEST"
+    fi
+    combined=("${existing[@]}" "${INSTALLED[@]}")
+    printf '%s\n' "${combined[@]}" | sort -u > "$MANIFEST"
   fi
 
   echo ""
@@ -114,5 +119,5 @@ else
 
   echo "Done. Restart OpenCode to use the crew."
   echo "  Tab → Surveyor / Architect / Foreman"
-  echo "  Task tool → Librarian / Adjudicator / Builder / Inspector"
+  echo "  Task tool → Librarian / Examiner / Groundskeeper / Builder / Inspector"
 fi
