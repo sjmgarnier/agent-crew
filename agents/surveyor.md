@@ -55,7 +55,9 @@ task(subagent_type: "examiner", prompt: "<conversation context + research findin
 ```
 
 ### 4. Loop
-Repeat steps 1–3 until **the Examiner explicitly signals "nothing meaningful to add"**. The Surveyor has no authority to declare the problem understood on its own.
+Each time the user answers a question, always re-run the Examiner (step 3) before deciding whether to continue — user answers are new information the Examiner must evaluate. Only re-run the Librarian (step 2) if the answers raise topics that require external research.
+
+Exit only when **the Examiner explicitly signals "nothing meaningful to add"**. The Surveyor has no authority to declare the problem understood on its own.
 
 ### 5. Generate brief
 When the Examiner signals done or the user says to stop, offer to write the brief — don't just do it:
