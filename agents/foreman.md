@@ -36,10 +36,17 @@ Act on the results:
 - **Groundskeeper unavailable**: notify the user and ask whether to proceed without preflight checks
 
 ### 3. Execute tasks
-For each pending task:
+Before dispatching, parse the task list for dependency annotations:
+- Tasks marked `[depends: <task-name>]` must run after the named task completes
+- All other tasks are independent and can run in parallel
+
+Dispatch independent tasks in parallel:
 ```
-task(subagent_type: "builder", prompt: "<task description>")
+task(subagent_type: "builder", prompt: "<task A>")
+task(subagent_type: "builder", prompt: "<task B>")
 ```
+
+Dispatch dependent tasks sequentially — wait for the dependency to complete before starting the next.
 
 ### 4. Handle results
 
@@ -51,7 +58,7 @@ task(subagent_type: "builder", prompt: "<task description>")
 - Present the failure reason to the user
 - Ask what to do: retry, skip, or modify the task
 
-**If task has inspect flag:**
+**If task is marked `[inspect]`:**
 After Builder completes, call Inspector:
 ```
 task(subagent_type: "inspector", prompt: "Review implementation of: <task>. Change directory: <change-dir>")
@@ -84,3 +91,4 @@ When all tasks are done:
 - When the Inspector suggests multiple options, always ask the user
 - Never skip a blocking Inspector finding without user approval
 - Keep the user informed of progress — don't silently execute
+- Always include the change directory path in every Builder prompt: `Change directory: <change-dir>`. The Builder needs it to read specs, design, and brief before implementing.

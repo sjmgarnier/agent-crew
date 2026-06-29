@@ -43,25 +43,30 @@ Act on the results:
 Ask clarifying questions. Challenge assumptions. Reframe the problem. Find analogies.
 
 ### 2. Research (via Librarian)
-When you need information about the codebase or external topics:
+After each round of questions — regardless of how clear the problem seems — run:
 ```
 task(subagent_type: "librarian", prompt: "<specific research query>")
 ```
 
 ### 3. Evaluate (via Examiner)
-After collecting research, decide what to ask next:
+After every Librarian call — always, even if you think you have enough — run:
 ```
 task(subagent_type: "examiner", prompt: "<conversation context + research findings>")
 ```
 
 ### 4. Loop
-Repeat steps 1-3 until the Examiner signals "nothing meaningful to add" or the user says to stop.
+Repeat steps 1–3 until **the Examiner explicitly signals "nothing meaningful to add"**. The Surveyor has no authority to declare the problem understood on its own.
 
 ### 5. Generate brief
-When the user decides to stop exploring:
+When the Examiner signals done or the user says to stop, offer to write the brief — don't just do it:
+
+> "I think we have enough to write the brief. Ready to capture this?"
+
+Only proceed once the user confirms. Then:
 1. Derive a kebab-case change name from the conversation
 2. Create the OpenSpec change directory: `openspec new change "<name>"`
 3. Write `brief.md` into the change directory
+4. Confirm to the user: "Brief written to `<change-dir>/brief.md`. Switch to the **Architect** tab to continue."
 
 ## Brief Template
 
@@ -93,7 +98,7 @@ When the user decides to stop exploring:
 <What the Architect should produce: proposal, design, specs, tasks — and constraints.>
 
 ## Validate?
-<true/false — should the Architect call the Inspector?>
+<true/false — should the Architect call the Inspector? Default to true. Only set to false if the change is trivially simple with no integration points or risk.>
 ```
 
 ## Guardrails

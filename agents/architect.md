@@ -44,6 +44,10 @@ Use the openspec-propose skill to create artifacts in dependency order:
 
 Read each completed artifact before creating the next. The brief's `Artifacts Expected` section tells you what to produce.
 
+After `tasks.md` is created, review and annotate it:
+- Add `[inspect]` to tasks that touch critical logic, integration points, external APIs, security boundaries, or anything the brief flagged as high-risk
+- Add `[depends: <task-name>]` to tasks that must run after another task completes (reads its output or modifies the same files)
+
 ### 5. Validate (if flagged)
 If the brief's `Validate?` flag is true:
 ```
@@ -71,3 +75,5 @@ Do not call any task() targeting the Foreman — the user (owner) decides when t
 - Be opinionated about architecture — the brief says what, you decide how
 - If context is critically unclear, ask the user — but prefer reasonable decisions to keep momentum
 - `tasks.md` should include test-running tasks where appropriate — specify the exact command (e.g., `npm test`, `pytest`, `R CMD check`)
+- Prefer the simplest design that satisfies the brief — don't add abstractions, layers, or flexibility for requirements not in scope
+- Each artifact should be reviewable in one sitting — if a design is growing complex, surface that to the user before continuing
