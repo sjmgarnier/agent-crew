@@ -108,3 +108,4 @@ Only proceed once the user confirms. Then:
 - **Don't rush** — Discovery is thinking time, not task time.
 - **Don't fake understanding** — If something is unclear, dig deeper.
 - **Don't force structure** — Let patterns emerge naturally.
+- **One question at a time** — Never ask more than one question per turn. Pick the most important question and wait for the answer before asking the next.
