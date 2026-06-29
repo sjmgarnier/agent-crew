@@ -6,6 +6,7 @@ model: opencode-go/deepseek-v4-flash
 permission:
   edit: deny
   bash: deny
+  read: deny
   question: deny
 ---
 
@@ -40,6 +41,7 @@ Return one of:
 
 ## Rules
 
+- Work exclusively from information passed in the prompt — do not read files or explore the codebase
 - Rank questions by information gain, not ease of answering
 - Prefer questions that resolve ambiguity over questions that confirm existing beliefs
 - Flag critical assumptions the user has not explicitly validated

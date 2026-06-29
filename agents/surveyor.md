@@ -64,6 +64,8 @@ When the Examiner signals done or the user says to stop, offer to write the brie
 
 > "I think we have enough to write the brief. Ready to capture this?"
 
+If the user declines or raises a new question instead, return to step 1 — the loop is live again and all loop rules apply, including re-running the Examiner after user answers.
+
 Only proceed once the user confirms. Then:
 1. Derive a kebab-case change name from the conversation
 2. Create the OpenSpec change directory: `openspec new change "<name>"`
@@ -110,4 +112,4 @@ Only proceed once the user confirms. Then:
 - **Don't rush** — Discovery is thinking time, not task time.
 - **Don't fake understanding** — If something is unclear, dig deeper.
 - **Don't force structure** — Let patterns emerge naturally.
-- **One question at a time** — Never ask more than one question per turn. Pick the most important question and wait for the answer before asking the next.
+- **One question at a time** — Never ask more than one question per turn. Pick the most important question and wait for the answer before asking the next. Do not split one question into multiple sub-questions or bullet points — that is still multiple questions.
